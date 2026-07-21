@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Multi-Page Surprise for Yasir Ali!</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffe6e8 0%, #ffd3d8 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 480px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        /* Page Dots Indicator */
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ffd1d7;
+            transition: 0.4s;
+        }
+
+        .dot.active {
+            background-color: #ff2e63;
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        .page {
+            display: none;
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .click-text {
+            margin-top: 20px;
+            color: #d63447;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .btn-next {
+            margin-top: 25px;
+            padding: 12px 28px;
+            background: linear-gradient(45deg, #ff2e63, #ff4b5c);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 46, 99, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 46, 99, 0.6);
+        }
+
+        /* PAGE 1: ENVELOPE */
+        .envelope-container {
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s;
+            margin-top: 10px;
+        }
+
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            width: 180px;
+            height: 120px;
+            background: #ff4b5c;
+            border-radius: 8px;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-left: 90px solid transparent;
+            border-right: 90px solid transparent;
+            border-top: 65px solid #ff2e63;
+        }
+
+        .envelope-seal {
+            position: absolute;
+            top: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            height: 35px;
+            background: #ffd700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-size: 16px;
+        }
+
+        /* PAGE 2: GIFT BOX */
+        .gift-box {
+            width: 140px;
+            height: 140px;
+            background-color: #ff4b5c;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.05);
+        }
+
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 100%;
+            background-color: #ffd700;
+            left: 57.5px;
+        }
+
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            height: 25px;
+            width: 100%;
+            background-color: #ffd700;
+            top: 57.5px;
+            left: 0;
+        }
+
+        /* PAGE 3 & 4: CONTENT & POETRY */
+        h1, h2 {
+            color: #ff2e63;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .poetry-box {
+            margin-top: 15px;
+            padding: 18px;
+            background: #ffffff;
+            border-radius: 15px;
+            border-right: 5px solid #ff2e63;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .poetry-text {
+            color: #333;
+            font-size: 16px;
+            line-height: 1.9;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* CANVAS STYLING FOR PAGE 4 */
+        #customVideoCanvas {
+            width: 100%;
+            max-width: 400px;
+            height: 240px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: #000;
+            margin-bottom: 10px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Page Dots Indicator -->
+        <div class="step-indicator">
+            <div class="dot active" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+            <div class="dot" id="dot3"></div>
+            <div class="dot" id="dot4"></div>
+        </div>
+
+        <!-- PAGE 1: ENVELOPE -->
+        <div id="page1" class="page active">
+            <h2>ایک خاص پیغام... ✉️</h2>
+            <div class="envelope-container" onclick="nextPage(2)">
+                <div class="envelope">
+                    <div class="envelope-seal">❤️</div>
+                </div>
+            </div>
+            <p class="click-text">یاسر علی، لفافے پر ٹیپ کریں! ✨</p>
+        </div>
+
+        <!-- PAGE 2: GIFT BOX -->
+        <div id="page2" class="page">
+            <h2>آپ کے لیے تحفہ! 🎁</h2>
+            <div class="gift-box" onclick="nextPage(3)"></div>
+            <p class="click-text">گفٹ باکس کو کھولیں! 👇</p>
+        </div>
+
+        <!-- PAGE 3: POETRY PART 1 -->
+        <div id="page3" class="page">
+            <h1>پیارے یاسر علی! ❤️</h1>
+            <div class="poetry-box">
+                <p class="poetry-text">
+                    "تیرے آنے سے زندگی میں روشنی سی ہوئی ہے،<br>
+                    یاسر، تیرے ساتھ ہر خوشی مکمل سی ہوئی ہے۔<br>
+                    نہ ہو کوئی غم تیری زندگی میں کبھی،<br>
+                    تیرے مسکرانے سے ہی میری دُنیا سجی ہے۔" ✨
+                </p>
+            </div>
+            <button class="btn-next" onclick="nextPage(4)">آگے دیکھیے... ➡️</button>
+        </div>
+
+        <!-- PAGE 4: SKY CANVAS ANIMATION & FINAL POETRY -->
+        <div id="page4" class="page">
+            <h2>ہمیشہ خوش رہو! ✨</h2>
+            
+            <canvas id="customVideoCanvas"></canvas>
+
+            <div class="poetry-box">
+                <p class="poetry-text">
+                    "رہے سلامت مسکراہٹ ہمیشہ تیرے چہرے پر،<br>
+                    تیرے نام سے ہی میری ہر دعا شروع ہوئی ہے۔" ❤️
+                </p>
+            </div>
+            <button class="btn-next" onclick="nextPage(1)">دوبارہ دیکھیں 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        let currentCanvasAnim = null;
+
+        function updateDots(pageNumber) {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`dot${i}`).classList.remove('active');
+            }
+            document.getElementById(`dot${pageNumber}`).classList.add('active');
+        }
+
+        function nextPage(pageNumber) {
+            // Hide all pages
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`page${i}`).classList.remove('active');
+            }
+
+            // Show selected page
+            document.getElementById(`page${pageNumber}`).classList.add('active');
+            updateDots(pageNumber);
+
+            // Start Canvas Animation if on Page 4
+            if (pageNumber === 4) {
+                startSkyVideo();
+            }
+        }
+
+        function startSkyVideo() {
+            const canvas = document.getElementById('customVideoCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = 400;
+            canvas.height = 240;
+
+            let stars = [];
+            for (let i = 0; i < 50; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5,
+                    alpha: Math.random()
+                });
+            }
+
+            let hearts = [];
+            for (let i = 0; i < 12; i++) {
+                hearts.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 8 + 6,
+                    speed: Math.random() * 1 + 0.5
+                });
+            }
+
+            let frame = 0;
+
+            function drawHeart(x, y, size) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.fillStyle = '#ff2e63';
+                let topCurveHeight = size * 0.3;
+                ctx.moveTo(x, y + topCurveHeight);
+                ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+                ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + size, x, y + size);
+                ctx.bezierCurveTo(x, y + size, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+                ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function render() {
+                frame++;
+
+                // Aasman Ka Gradient Background
+                let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, '#020024');
+                gradient.addColorStop(0.6, '#090979');
+                gradient.addColorStop(1, '#00d4ff');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Stars Animation
+                for (let i = 0; i < stars.length; i++) {
+                    let s = stars[i];
+                    ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    s.alpha += (Math.random() - 0.5) * 0.05;
+                    if (s.alpha < 0.2) s.alpha = 0.2;
+                    if (s.alpha > 1) s.alpha = 1;
+                }
+
+                // Floating Hearts Animation
+                for (let i = 0; i < hearts.length; i++) {
+                    let h = hearts[i];
+                    drawHeart(h.x, h.y, h.size);
+                    h.y -= h.speed;
+                    if (h.y < -20) {
+                        h.y = canvas.height + 20;
+                        h.x = Math.random() * canvas.width;
+                    }
+                }
+
+                // Dynamic Canvas Message
+                let scene = Math.floor((frame / 150) % 2);
+                ctx.textAlign = 'center';
+
+                if (scene === 0) {
+                    ctx.fillStyle = '#ffd700';
+                    ctx.font = 'bold 22px Arial';
+                    ctx.shadowColor = '#ffffff';
+                    ctx.shadowBlur = 12;
+                    ctx.fillText('🌟 YASIR ALI 🌟', canvas.width / 2, canvas.height / 2 - 5);
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '14px Arial';
+                    ctx.shadowBlur = 5;
+                    ctx.fillText('You Are Very Special! ❤️', canvas.width / 2, canvas.height / 2 + 25);
+                } else if (scene === 1) {
+                    ctx.fillStyle = '#ff4b5c';
+                    ctx.font = 'bold 20px Arial';
+                    ctx.shadowColor = '#ffd700';
+                    ctx.shadowBlur = 10;
+                    ctx.fillText('💖 Always Be Happy! 💖', canvas.width / 2, canvas.height / 2);
+                }
+
+                if (document.getElementById('page4').classList.contains('active')) {
+                    requestAnimationFrame(render);
+                }
+            }
+
+            render();
+        }
+    </script>
+</body>
+</html>
